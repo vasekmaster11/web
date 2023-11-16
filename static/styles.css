@@ -1,0 +1,131 @@
+body {
+  background-color: #eeeeee;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin-left: 90px;
+  margin-right: 90px; }
+
+h1, h2, h3 {
+  clear: both;
+  margin-top: 3em;
+}
+
+h1 a {
+  color: #bb8800; 
+}
+
+nav ul {
+  margin: 1ex auto;
+  margin-left: 150px;
+  /* text-align: center; */
+  font-weight: bold; }
+  nav ul li {
+    display: block;
+    width: 30%;
+    margin-top: 1ex;
+    }
+    nav ul li a {
+      display: block;
+      color: white;
+      background-color: #324b79;
+      border-radius: 25px 50px 0px;
+      padding: 1ex 2ex; }
+    nav ul li a:hover {
+      color: #324b72;
+      background-color: white;
+    }
+  nav img {
+    float:left;
+  }
+
+footer {
+  padding: 0.1ex 2em;
+  margin-top: 2em;
+  border-top: solid 2px #FACC15;
+  background-color: #ecc8f0; }
+
+.login {
+  display: inline-block;
+  float: right;
+  width: 30%;
+  border: orange solid 2px;
+  padding: 1ex; }
+  
+.odd {
+    background-color: orange;
+}
+
+.even {
+    background-color: lightblue;
+}
+
+.message {
+  border-style: solid;
+  border-color: rgb(143, 117, 0);
+  border-width: 2px;
+  font-size: 200%;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  padding: 1ex;
+  border-radius: 10px;
+}
+
+.success {
+  border-color: green;
+}
+
+.error {
+  border-color: red;
+}
+/*# sourceMappingURL=styles.css.map */
+
+.link a{
+  background-color: #324b72;
+  border-radius: 25px 50px 0px;
+  padding: 1ex 2ex;
+}
+
+.logo {
+  height: 10%;
+  width: 10%;
+  margin-left: 45%;
+}
+
+.link {
+  text-align: center;
+}
+.img {
+  margin-left: 30%;
+  margin-right: 30%;
+}
+.big {
+width: 100%;
+height: 100%;
+}
+.hidden {
+  color: black;
+  text-decoration: none
+}
+.b {
+text-align: center;
+}
+.c {
+padding-top: 10%;
+text-align: center;
+}
+.c a {
+background-color: #0062ff;
+border-radius: 25px;
+padding: 1ex 2ex;
+text-align: center;
+text-decoration: none;
+font-size: 200%;
+}
+.c form {
+padding-left: 42%;
+}
+.d {
+background-image: radial-gradient(red, pink, blue, white, green, brown, yellow);
+}
