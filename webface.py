@@ -11,8 +11,8 @@ from flask import (
 )
 import functools
 import random
-
-# from werkzeug.security import generate_password_hash, check_password_hash
+from sqlitewrap import SQLite
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = b"totoj e zceLa n@@@hodny retezec nejlep os.urandom(24)"
@@ -65,7 +65,10 @@ def login_post():
     jmeno = request.form.get('jmeno','')
     heslo = request.form.get('heslo','')
     url = request.args.get('url','')
-    if jmeno == "fixa" and heslo == "0":
+    with SQLite('data.sqlite') as cur:
+        response = cur.execute('SELECT login, password FROM user WHERE login = ? AND password = ?',[jmeno, heslo])
+        response = response.fetchone()
+    if response:
         session["user"] = jmeno
         flash("Jsi přihlášen!", "success")
         if url:
