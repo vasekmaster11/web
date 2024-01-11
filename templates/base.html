@@ -24,9 +24,9 @@ Nikdo není přihlášen.
 {% endif %}
 </p>
 <p><a href="{{ url_for('root')}}"><img class="logo" src="{{ url_for('static', filename='logo.jpeg') }}"></a></p>
-  <nav>
-  <p class="link"><a href="{{ url_for('root') }}">Home</a><a href="{{ url_for('abc') }}">Pes</a><a href="{{ url_for('spenat') }}">Kočka</a><a href="{{ url_for('login') }}">Login</a><a href="{{ url_for('register') }}">Register</a><a href="{{ url_for('secret') }}">SUPER SECRET STUFF</a></p>
-  </nav>
+<nav>
+  <p class="link"><a href="{{ url_for('root') }}">Home</a><a href="{{ url_for('abc') }}">Pes</a><a href="{{ url_for('spenat') }}">Kočka</a><a href="{{ url_for('vzkazy') }}">Vzkazy</a><a href="{{ url_for('login') }}">Login</a><a href="{{ url_for('register') }}">Register</a><a href="{{ url_for('secret') }}">SUPER SECRET STUFF</a></p>
+</nav>
 
 {% for category, message in get_flashed_messages(with_categories=True) %}
 <p class="message {{ category }}">{{ message }}</p>

@@ -11,9 +11,11 @@ from flask import (
 )
 import functools
 import random
+import datetime
 from sqlitewrap import SQLite
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlite3 import IntegrityError
+
 
 app = Flask(__name__)
 app.secret_key = b"totoj e zceLa n@@@hodny retezec nejlep os.urandom(24)"
@@ -115,3 +117,32 @@ def register_post():
     except IntegrityError:
         flash(f"uživatel {jmeno} již existuje", "error")
     return redirect(url_for("register"))
+
+@app.route("/vzkazy/", methods=["GET"])
+def vzkazy():
+    if "user" not in session:
+        flash("pro vstup se musíš přihlásit")
+        return redirect(url_for("login", url=request.path))
+    
+    with SQLite('data.sqlite') as cur:
+        response = cur.execute('SELECT login, body, datetime FROM user JOIN message ON user.id = message.user_id ORDER BY datetime DESC').fetchall()
+
+    return render_template("vzkazy.html", response=response)
+
+@app.route("/vzkazy/", methods=["POST"])
+def vzkazy_post():
+    if "user" not in session:
+        flash("pro vstup se musíš přihlásit")
+        return redirect(url_for("login", url=request.path))
+    
+    with SQLite('data.sqlite') as cur:
+        user_id = list(cur.execute('SELECT id FROM user WHERE login = ?', [session['user']]).fetchone())[0]
+
+    vzkaz = request.form.get('vzkaz')
+    if vzkaz:
+        with SQLite('data.sqlite') as cur:
+            cur.execute(
+                'INSERT INTO message (user_id, body, datetime) VALUES (?,?,?)', [user_id, vzkaz, datetime.datetime.now()],
+            )
+
+    return redirect(url_for("vzkazy"))
