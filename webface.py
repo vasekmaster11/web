@@ -125,9 +125,9 @@ def vzkazy():
         return redirect(url_for("login", url=request.path))
     
     with SQLite('data.sqlite') as cur:
-        response = cur.execute('SELECT login, body, datetime FROM user JOIN message ON user.id = message.user_id ORDER BY datetime DESC').fetchall()
+        response = cur.execute('SELECT login, body, datetime, message.id FROM user JOIN message ON user.id = message.user_id ORDER BY datetime DESC').fetchall()
 
-    return render_template("vzkazy.html", response=response)
+    return render_template("vzkazy.html", response=response, d=datetime.datetime)
 
 @app.route("/vzkazy/", methods=["POST"])
 def vzkazy_post():

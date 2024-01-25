@@ -129,3 +129,22 @@ padding-left: 42%;
 .d {
 background-image: radial-gradient(red, pink, blue, white, green, brown, yellow);
 }
+.vzkaz {
+background-color:indigo;
+padding: 1ex;
+border-radius: 20px;
+border: aqua 50px groove;
+margin:1ex 0 2ex;
+text-decoration: overline;
+font-family:monospace;
+}
+.head {
+  margin-left: 7em;
+}
+.body {
+  margin-left: 20em;
+}
+.vzkaz form {
+  display: inline-block;
+  float: right;
+}
