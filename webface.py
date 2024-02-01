@@ -146,3 +146,24 @@ def vzkazy_post():
             )
 
     return redirect(url_for("vzkazy"))
+
+@app.route('/vzkaz/vymazat', methods=['POST'])
+def vymaz_vzkaz():
+    if request.form.get('id'):
+        with SQLite('data.sqlite') as cur:
+            cur.execute('DELETE FROM message where id = ? and user_id = ?', [request.form.get('id'), cur.execute('SELECT id FROM user WHERE login = ?', [session['user']]).fetchone()[0]])
+    return redirect(url_for('vzkazy'))
+
+@app.route('/editovat/<int:_id>')
+@prihlasit
+def editovat(_id):
+    with SQLite('data.sqlite') as cur:
+        body = cur.execute('select body from message where id = ?', [_id]).fetchone()[0]
+    return render_template('editovat.html', body=body)
+
+@app.route('/editovat/<int:_id>', methods=['POST'])
+def editovat_post(_id):
+    if request.form.get('vzkaz'):
+        with SQLite('data.sqlite') as cur:
+            cur.execute('update message set body = ? where id = ? and user_id = (SELECT id FROM user WHERE login = ?)', [request.form.get('vzkaz') , _id, session['user']])
+    return redirect(url_for('vzkazy'))

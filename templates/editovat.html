@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{%block title%}editace{%endblock title%}
+
+{% block obsah %}
+<h1>editace</h1>
+
+<form method="post">
+    <textarea name='vzkaz' rows='7' cols='80'>{{body}}</textarea>
+    <p>
+        <button type='submit'>Uložit</button>
+        <button type='reset'>Vymazat</button>
+    </p>
+</form>
+
+{% endblock obsah %}
