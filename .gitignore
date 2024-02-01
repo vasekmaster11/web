@@ -1,3 +1,4 @@
+*.sqlite
 *.swp
 webface/*.sqlite
 */*.sqlite
