@@ -14,7 +14,9 @@ import random
 import datetime
 from sqlitewrap import SQLite
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from sqlite3 import IntegrityError
+import os
 
 
 app = Flask(__name__)
@@ -35,9 +37,6 @@ def prihlasit(function):
 
 @app.route("/", methods=["GET"])
 def root():
-    a = 3
-    b = 8
-    # a = 1 + '1'
     return render_template("base.html")
 
 @app.route("/pes/")
@@ -162,8 +161,38 @@ def editovat(_id):
     return render_template('editovat.html', body=body)
 
 @app.route('/editovat/<int:_id>', methods=['POST'])
+@prihlasit
 def editovat_post(_id):
     if request.form.get('vzkaz'):
         with SQLite('data.sqlite') as cur:
             cur.execute('update message set body = ? where id = ? and user_id = (SELECT id FROM user WHERE login = ?)', [request.form.get('vzkaz') , _id, session['user']])
     return redirect(url_for('vzkazy'))
+
+@app.route('/upload', methods=['GET'])
+def upload():
+    print(__file__)
+    return render_template('upload.html')
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
+
+uploadfolder = os.path.dirname(__file__)+'/upload'
+allowed_extensions = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+
+@app.route('/upload', methods=['POST'])
+def upload_post():
+    # check if the post request has the file part
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    # If the user does not select a file, the browser submits an
+    # empty file without a filename.
+    if file.filename == '':
+        flash('No selected file')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(uploadfolder, filename))
+        flash('upload succesfull')
+        return redirect(url_for('upload'))
