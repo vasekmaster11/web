@@ -12,4 +12,13 @@
     <input type="submit" value="upload">
 </form>
 
+<h2>Gallery</h2>
+
+{%for filename, data, ext in response%}
+    <p>
+        {{filename}}
+        <img src="data:{{ext}};base64,{{data}}" alt="" style="max-width:88;">
+    </p>
+{%endfor%}
+
 {% endblock obsah %}

@@ -17,7 +17,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from sqlite3 import IntegrityError
 import os
-
+import uuid
+import base64
 
 app = Flask(__name__)
 app.secret_key = b"totoj e zceLa n@@@hodny retezec nejlep os.urandom(24)"
@@ -170,8 +171,11 @@ def editovat_post(_id):
 
 @app.route('/upload', methods=['GET'])
 def upload():
-    print(__file__)
-    return render_template('upload.html')
+    with SQLite('data.sqlite') as cur:
+        images = []
+        for filename_origin, data in cur.execute('SELECT filename_origin, data FROM upload').fetchall():
+            images.append([filename_origin, base64.b64encode(data).decode('ascii'), f'image/{os.path.splitext(filename_origin)[-1][1:]}'])
+    return render_template('upload.html', response=images)
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
@@ -191,8 +195,15 @@ def upload_post():
     if file.filename == '':
         flash('No selected file')
         return redirect(request.url)
-    if file and allowed_file(file.filename):
+    if file and allowed_file(file.filename) and file.filename:
         filename = secure_filename(file.filename)
-        file.save(os.path.join(uploadfolder, filename))
+        filename_db = uuid.uuid1().hex+'-'+filename
+        file.save(os.path.join(uploadfolder, uuid.uuid1().hex+'-'+filename))
+        file.stream.seek(0)
+        with SQLite('data.sqlite') as cur:
+            cur.execute('INSERT INTO upload (filename_origin, filename_on_disk, data) VALUES (?, ?, ?)', (filename_db, filename, file.stream.read()))
         flash('upload succesfull')
         return redirect(url_for('upload'))
+    
+    flash('failed to upload file', 'error')
+    return redirect(url_for('upload'))
