@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{%block title%}Upload{%endblock title%}
+
+{% block obsah %}
+
+<h1>Upload file(s)</h1>
+
+<form method="post" enctype="multipart/form-data">
+    Titulek: <input type="text" name="title">
+    <input type="file" name="file">
+    <input type="submit" value="upload">
+</form>
+
+<h2>Gallery 2</h2>
+
+{%for filename in files%}
+    <p>
+        <a href="{{ url_for('files', filename=filename) }}">{{filename}}</a>
+        <img src="{{ url_for('files', filename=filename) }}" alt="" style="max-width:88;">
+    </p>
+{%endfor%}
+
+{% endblock obsah %}

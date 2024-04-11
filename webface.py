@@ -8,6 +8,7 @@ from flask import (
     Markup,
     escape,
     flash,
+    send_from_directory,
 )
 import functools
 import random
@@ -180,7 +181,7 @@ def upload():
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
-uploadfolder = os.path.dirname(__file__)+'/upload'
+uploadfolder = os.path.dirname(__file__)+'/files'
 allowed_extensions = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 
 @app.route('/upload', methods=['POST'])
@@ -207,3 +208,13 @@ def upload_post():
     
     flash('failed to upload file', 'error')
     return redirect(url_for('upload'))
+
+@app.route('/upload2', methods=['GET'])
+def upload2():
+    files = os.listdir(uploadfolder)
+    print(files)
+    return render_template('upload2.html', files=files)
+
+@app.route('/files/<path:filename>')
+def files(filename):
+    return send_from_directory(uploadfolder, filename)
